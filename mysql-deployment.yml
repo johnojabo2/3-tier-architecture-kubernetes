@@ -1,50 +1,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: database-deployment
   namespace: dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: database
   template:
     metadata:
       labels:
-        app: mysql
+        app: database
     spec:
       containers:
-      - name: mysql
-        image: mysql:latest
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: my-secret-pw
-        - name: MYSQL_USER
-          value: wordpress
-        - name: MYSQL_PASSWORD
-          value: my-secret-pw
-        - name: MYSQL_DATABASE
-          value: wordpress
+      - name: database
+        image: johnojabo1/database
+        # env:
+        # - name: MYSQL_ROOT_PASSWORD
+        #   value: my-secret-pw
+        # - name: MYSQL_USER
+        #   value: wordpress
+        # - name: MYSQL_PASSWORD
+        #   value: my-secret-pw
+        # - name: MYSQL_DATABASE
+        #   value: wordpress
         ports:
-        - containerPort: 3306
+        - containerPort: 27017
         volumeMounts:
-        - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
+        - name: database-persistent-storage
+          mountPath: /var/lib/mongodb
       volumes:
-      - name: mysql-persistent-storage
+      - name: mongodb-persistent-storage
         emptyDir: {}
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: database
   namespace: dev
 spec:
   selector:
-    app: mysql
+    app: database
   ports:
-    - name: mysql
-      port: 3306
-      targetPort: 3306
+    - name: database
+      port: 27017
+      targetPort: 27017
 
