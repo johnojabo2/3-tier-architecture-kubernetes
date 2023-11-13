@@ -3,52 +3,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress
+  name: backend
   namespace: dev
   labels:
-    app: wordpress
+    app: backend
 spec:
   selector:
     matchLabels:
-      app: wordpress
+      app: backend
   template:
     metadata:
       labels:
-        app: wordpress
+        app: backend
     spec:
       containers:
-        - name: wordpress
-          image: wordpress:latest
+        - name: backend
+          image: johnojabo1/backend
           env:
-            - name: WORDPRESS_DB_HOST
-              value: mysql
-            - name: WORDPRESS_DB_USER
-              value: wordpress
-            - name: WORDPRESS_DB_PASSWORD
-              value: my-secret-pw
-            - name: WORDPRESS_DB_NAME
-              value: wordpress
+            - name: MONGODB_HOST
+              value: mongodb
           ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: wordpress-persistent-storage
-              mountPath: /var/www/html
+            - containerPort: 7777
+          # volumeMounts:
+          #   - name: wordpress-persistent-storage
+          #     mountPath: /var/www/html
       volumes:
         - name: wordpress-persistent-storage
           persistentVolumeClaim:
-            claimName: wordpress-pvc
+            claimName: backend-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress
+  name: backend
   namespace: dev
 spec:
   selector:
-    app: wordpress
+    app: backend
   type: NodePort
   ports:
-    - name: wordpress
-      port: 80
-      targetPort: 80
-      nodePort: 30080
+    - name: backend
+      port: 7777
+      targetPort: 7777
+      nodePort: 30070
