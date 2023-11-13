@@ -33,6 +33,8 @@ spec:
       volumes:
       - name: mongodb-persistent-storage
         emptyDir: {}
+        persistentVolumeClaim:
+          claimName: mongodb-pvc 
 
 ---
 apiVersion: v1
