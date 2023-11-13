@@ -29,7 +29,7 @@ spec:
         - containerPort: 27017
         volumeMounts:
         - name: mongodb-persistent-storage
-          mountPath: /var/lib/mongodb
+          mountPath: /data/db
       volumes:
       - name: mongodb-persistent-storage
         emptyDir: {}
