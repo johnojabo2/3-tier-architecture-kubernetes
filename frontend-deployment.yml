@@ -1,1 +1,46 @@
-
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: dev
+  labels:
+    app: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: johnojabo1/frontend:v1
+          env:
+            - name: BACKEND_IP
+              value: backend
+          ports:
+            - containerPort: 8080
+          # volumeMounts:
+          #   - name: wordpress-persistent-storage
+          #     mountPath: /var/www/html
+      # volumes:
+      #   - name: backend-persistent-storage
+      #     persistentVolumeClaim:
+      #       claimName: backend-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: dev
+spec:
+  selector:
+    app: frontend
+  type: NodePort
+  ports:
+    - name: frontend
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080
