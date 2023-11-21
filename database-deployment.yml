@@ -16,23 +16,12 @@ spec:
       containers:
       - name: database
         image: johnojabo1/database
-        # env:
-        # - name: MYSQL_ROOT_PASSWORD
-        #   value: my-secret-pw
-        # - name: MYSQL_USER
-        #   value: wordpress
-        # - name: MYSQL_PASSWORD
-        #   value: my-secret-pw
-        # - name: MYSQL_DATABASE
-        #   value: wordpress
         ports:
         - containerPort: 27017
         volumeMounts:
         - name: mongodb-persistent-storage
           mountPath: /data/db
       volumes:
-      - name: mongodb-persistent-storage
-        emptyDir: {}
         persistentVolumeClaim:
           claimName: mongodb-pvc 
 
