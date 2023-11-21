@@ -22,13 +22,6 @@ spec:
               value: database
           ports:
             - containerPort: 7777
-          # volumeMounts:
-          #   - name: wordpress-persistent-storage
-          #     mountPath: /var/www/html
-      volumes:
-        - name: backend-persistent-storage
-          persistentVolumeClaim:
-            claimName: backend-pvc
 ---
 apiVersion: v1
 kind: Service
